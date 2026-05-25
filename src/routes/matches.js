@@ -24,7 +24,8 @@ router.get('/', async (req, res) => {
     const data = await db
       .select()
       .from(matches)
-      .orderBy(desc(matches.createdAt));
+      .orderBy(desc(matches.createdAt))
+      .limit(limit);
     return res.status(200).json({ data });
   } catch (e) {
     return res.status(500).json({
@@ -60,10 +61,9 @@ router.post('/', async (req, res) => {
 
     res.status(201).json(event);
   } catch (e) {
+    console.error('Failed to create match', e);
     return res.status(500).json({
       error: 'Failed to create match',
-      details: e.message,
-      stack: e.stack,
     });
   }
 });

@@ -1,6 +1,5 @@
-import { MATCH_STATUS } from '../validation/matches.js';
-
-export function getMatchStatus(startTime, endTime, now = new Date()) {
+const { MATCH_STATUS } = require('../validation/matches.js');
+function getMatchStatus(startTime, endTime, now = new Date()) {
   const start = new Date(startTime);
   const end = new Date(endTime);
 
@@ -19,7 +18,7 @@ export function getMatchStatus(startTime, endTime, now = new Date()) {
   return MATCH_STATUS.LIVE;
 }
 
-export async function syncMatchStatus(match, updateStatus) {
+async function syncMatchStatus(match, updateStatus) {
   const nextStatus = getMatchStatus(match.startTime, match.endTime);
   if (!nextStatus) {
     return match.status;
@@ -30,3 +29,7 @@ export async function syncMatchStatus(match, updateStatus) {
   }
   return match.status;
 }
+module.exports = {
+  getMatchStatus,
+  syncMatchStatus,
+};
