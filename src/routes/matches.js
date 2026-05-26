@@ -58,8 +58,15 @@ router.post('/', async (req, res) => {
         status: getMatchStatus(startTime, endTime),
       })
       .returning();
-      if (res.app.locals.broadcastMatchCreated) {
-        res.app.locals.broadcastMatchCreated(event);
+      if (typeof res.app.locals.broadcastMatchCreated === 'function') {
+        try {
+          res.app.locals.broadcastMatchCreated(event);
+        } catch (broadcastErr) {
+          console.error(
+            'Failed to broadcast match_created event',
+            broadcastErr,
+          );
+        }
       }
 
     res.status(201).json(event);
