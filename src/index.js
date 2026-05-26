@@ -1,11 +1,20 @@
 const express = require("express");
 const matchesRouter = require('./routes/matches');
+const { attachWebSocketServer } = require('./ws/server');
+
+const http = require('http');
 const app = express();
+
+const server = http.createServer(app);
+
+const { broadcastMatchCreated } = attachWebSocketServer(server);
+app.locals.broadcastMatchCreated = broadcastMatchCreated;
+
 
 app.use(express.json());
 
-
 app.use('/matches', matchesRouter);
+
 
 app.use((err, req, res, next) => {
   console.error(err);
@@ -14,7 +23,13 @@ app.use((err, req, res, next) => {
     error: 'Internal Server Error',
   });
 });
-const PORT = 3000;
-app.listen(PORT, () => {
-  console.log(`Server is running at http://localhost:${PORT}`);
+const PORT = process.env.PORT || 3000;
+const HOST = process.env.HOST || '0.0.0.0';
+server.listen(PORT, HOST, () => {
+  const BASE_URL =
+    HOST == '0.0.0.0'
+      ? `http://localhost:${PORT}`
+      : `http://${HOST}:${PORT}`;
+  console.log(`Server is running at ${BASE_URL}`);
+  console.log(`WebSocket running at ${BASE_URL.replace('http', 'ws')}/ws`);
 });
