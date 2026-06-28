@@ -16,7 +16,7 @@ app.locals.broadcastMatchCreated = broadcastMatchCreated;
 app.use(express.json());
 
 app.use(securityMiddleware());
-app.use('/', () => {
+app.get('/', (req, res) => {
   res.send('Welcome to the Sportz API');
 });
 app.use('/matches', matchesRouter);

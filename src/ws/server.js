@@ -24,6 +24,7 @@ const attachWebSocketServer = (server) => {
   });
 
   wss.on('connection', async (socket, req) => {
+    socket.on('error', console.error);
     if (wsArcjet) {
       try {
         const decision = await wsArcjet.protect(req);
@@ -33,15 +34,15 @@ const attachWebSocketServer = (server) => {
             ? 'Rate Limit Exceeded'
             : 'Access Denied';
           socket.close(code, reason);
+          return;
         }
       } catch (e) {
         console.error('Error in Arcjet WebSocket protection:', e);
         socket.close(1011, 'Internal Server Error');
+        return;
       }
-      sendJson(socket, { type: 'welcome' });
-
-      socket.on('error', console.error);
     }
+    sendJson(socket, { type: 'welcome' });
   });
 
   const broadcastMatchCreated = (match) => {
