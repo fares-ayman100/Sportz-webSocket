@@ -1,4 +1,6 @@
-const { WebSocket, WebSocketServer } = require('ws');
+const { WebSocketServer, WebSocket } = require('ws');
+const { wsArcjet } = require('../arcjet');
+const { ca } = require('zod/locales');
 
 const sendJson = (socket, payload) => {
   if (socket.readyState !== WebSocket.OPEN) return;
@@ -21,10 +23,26 @@ const attachWebSocketServer = (server) => {
     maxPayload: 1024 * 1024,
   });
 
-  wss.on('connection', (socket) => {
-    sendJson(socket, { type: 'welcome' });
-
+  wss.on('connection', async (socket, req) => {
     socket.on('error', console.error);
+    if (wsArcjet) {
+      try {
+        const decision = await wsArcjet.protect(req);
+        if (decision.isDenied()) {
+          const code = decision.reason.isRateLimit() ? 1013 : 1008;
+          const reason = decision.reason.isRateLimit()
+            ? 'Rate Limit Exceeded'
+            : 'Access Denied';
+          socket.close(code, reason);
+          return;
+        }
+      } catch (e) {
+        console.error('Error in Arcjet WebSocket protection:', e);
+        socket.close(1011, 'Internal Server Error');
+        return;
+      }
+    }
+    sendJson(socket, { type: 'welcome' });
   });
 
   const broadcastMatchCreated = (match) => {
