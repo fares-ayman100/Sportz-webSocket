@@ -1,8 +1,10 @@
 const express = require("express");
+const http = require('http');
+
 const matchesRouter = require('./routes/matches');
 const { attachWebSocketServer } = require('./ws/server');
+const { securityMiddleware } = require('./arcjet');
 
-const http = require('http');
 const app = express();
 
 const server = http.createServer(app);
@@ -13,6 +15,10 @@ app.locals.broadcastMatchCreated = broadcastMatchCreated;
 
 app.use(express.json());
 
+app.use(securityMiddleware());
+app.use('/', () => {
+  res.send('Welcome to the Sportz API');
+});
 app.use('/matches', matchesRouter);
 
 
