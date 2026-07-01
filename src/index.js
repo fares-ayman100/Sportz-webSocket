@@ -1,4 +1,5 @@
-const express = require("express");
+const AgentAPI = require('apminsight');
+const express = require('express');
 const http = require('http');
 
 const matchesRouter = require('./routes/matches');
@@ -14,10 +15,9 @@ const { broadcastMatchCreated, broadcastCommentary } =
 app.locals.broadcastMatchCreated = broadcastMatchCreated;
 app.locals.broadcastCommentary = broadcastCommentary;
 
-
 app.use(express.json());
 
-app.use(securityMiddleware());
+//app.use(securityMiddleware());
 app.get('/', (req, res) => {
   res.send('Welcome to the Sportz API');
 });

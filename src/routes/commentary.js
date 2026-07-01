@@ -72,7 +72,7 @@ router.post('/', async (req, res) => {
         matchId: paramsResult.data.id,
         ...bodyResult.data,
         metadata: bodyResult.data.metadata ?? null,
-        tags: bodyResult.data.tags?.join(',') ?? null,
+        tags: bodyResult.data.tags ?? null,
       })
       .returning();
 
@@ -87,7 +87,7 @@ router.post('/', async (req, res) => {
       }
     }
 
-    return res.status(201).json(result);
+  return res.status(201).json({data: result});
   } catch (error) {
     console.error('Failed to create commentary', error);
     return res.status(500).json({
