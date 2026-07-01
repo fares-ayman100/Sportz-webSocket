@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Sportz live sports dashboard with realtime match cards."
+    />
+    <title>Sportz | Live Matches</title>
+    <link rel="stylesheet" href="./css/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Main navigation">
+        <a class="brand" href="./index.html" aria-label="Sportz home">
+          <span class="brand-mark">S</span>
+          <span>Sportz</span>
+        </a>
+        <nav class="nav-list">
+          <a class="nav-link active" href="./index.html">Home</a>
+          <a class="nav-link" href="./index.html#matches">Live Matches</a>
+          <a class="nav-link" href="./index.html#settings">Settings</a>
+        </nav>
+      </aside>
+
+      <div class="workspace">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Realtime sports platform</p>
+            <h1>Sportz</h1>
+          </div>
+          <div class="topbar-actions">
+            <span class="connection-pill" id="connectionStatus">
+              <span class="status-dot"></span>
+              Backend
+            </span>
+            <span class="live-pill">Live</span>
+          </div>
+        </header>
+
+        <main class="page">
+          <section class="hero">
+            <div class="hero-copy">
+              <span class="section-kicker">Match center</span>
+              <h2>Live scores with instant match updates.</h2>
+              <p>
+                Follow every active fixture from your Express backend with fast
+                filtering, animated cards, and a dark glass dashboard interface.
+              </p>
+            </div>
+            <div class="hero-stat" aria-live="polite">
+              <strong id="matchCount">0</strong>
+              <span>matches loaded</span>
+            </div>
+          </section>
+
+          <section class="toolbar" aria-label="Match filters">
+            <label class="search-control">
+              <span>Search</span>
+              <input
+                id="searchInput"
+                type="search"
+                placeholder="Team or sport"
+                autocomplete="off"
+              />
+            </label>
+            <label class="select-control">
+              <span>Sport</span>
+              <select id="sportFilter">
+                <option value="all">All sports</option>
+              </select>
+            </label>
+            <label class="select-control">
+              <span>Status</span>
+              <select id="statusFilter">
+                <option value="all">All statuses</option>
+              </select>
+            </label>
+          </section>
+
+          <section id="stateRegion" aria-live="polite"></section>
+          <section class="matches-grid" id="matchesGrid"></section>
+        </main>
+      </div>
+    </div>
+
+    <script src="./js/config.js" defer></script>
+    <script src="./js/utils.js" defer></script>
+    <script src="./js/api.js" defer></script>
+    <script src="./js/matches.js" defer></script>
+  </body>
+</html>

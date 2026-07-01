@@ -1,6 +1,7 @@
 const AgentAPI = require('apminsight');
 const express = require('express');
 const http = require('http');
+const path = require('path');
 
 const matchesRouter = require('./routes/matches');
 const { attachWebSocketServer } = require('./ws/server');
@@ -15,12 +16,23 @@ const { broadcastMatchCreated, broadcastCommentary } =
 app.locals.broadcastMatchCreated = broadcastMatchCreated;
 app.locals.broadcastCommentary = broadcastCommentary;
 
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Accept');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(204);
+  }
+
+  return next();
+});
+
 app.use(express.json());
 
 //app.use(securityMiddleware());
-app.get('/', (req, res) => {
-  res.send('Welcome to the Sportz API');
-});
+
+app.use(express.static(path.join(__dirname, '..', 'public')));
 app.use('/matches', matchesRouter);
 
 app.use((err, req, res, next) => {
