@@ -6,9 +6,13 @@ const {
   createMatchSchema,
   listMatchesQuerySchema,
 } = require('../validation/matches.js');
+const commentaryRouter = require('./commentary');
 const { desc } = require('drizzle-orm');
 const router = express.Router();
 
+const MAX_LIMIT = 100;
+
+router.use('/:id/commentary', commentaryRouter);
 router.get('/', async (req, res) => {
   const parsed = listMatchesQuerySchema.safeParse(req.query);
   if (!parsed.success) {
@@ -19,7 +23,6 @@ router.get('/', async (req, res) => {
   }
 
   try {
-    const MAX_LIMIT = 100;
     const limit = Math.min(parsed.data.limit ?? 50, MAX_LIMIT);
     const data = await db
       .select()
