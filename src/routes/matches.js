@@ -13,6 +13,7 @@ const router = express.Router();
 const MAX_LIMIT = 100;
 
 router.use('/:id/commentary', commentaryRouter);
+
 router.get('/', async (req, res) => {
   const parsed = listMatchesQuerySchema.safeParse(req.query);
   if (!parsed.success) {
@@ -72,7 +73,7 @@ router.post('/', async (req, res) => {
         }
       }
 
-    res.status(201).json(event);
+    res.status(201).json({ data: event });
   } catch (e) {
     console.error('Failed to create match', e);
     return res.status(500).json({
