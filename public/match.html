@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Sportz realtime commentary timeline for a selected match."
+    />
+    <title>Sportz | Match Commentary</title>
+    <link rel="stylesheet" href="./css/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Main navigation">
+        <a class="brand" href="./index.html" aria-label="Sportz home">
+          <span class="brand-mark">S</span>
+          <span>Sportz</span>
+        </a>
+        <nav class="nav-list">
+          <a class="nav-link" href="./index.html">Home</a>
+          <a class="nav-link active" href="./index.html#matches">Live Matches</a>
+          <a class="nav-link" href="./index.html#settings">Settings</a>
+        </nav>
+      </aside>
+
+      <div class="workspace">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Realtime commentary</p>
+            <h1>Match Details</h1>
+          </div>
+          <div class="topbar-actions">
+            <span class="connection-pill" id="socketStatus">
+              <span class="status-dot"></span>
+              Connecting
+            </span>
+            <span class="live-pill">Live</span>
+          </div>
+        </header>
+
+        <main class="page">
+          <a class="back-link" href="./index.html">Back to matches</a>
+
+          <section class="match-hero">
+            <div>
+              <div class="match-meta">
+                <span class="live-pill">Live</span>
+                <span class="soft-pill" id="matchSport">Match</span>
+              </div>
+              <h2 id="matchTitle">Loading match...</h2>
+              <p id="matchTime">Loading kickoff time</p>
+            </div>
+            <div class="score-panel" aria-live="polite">
+              <span id="homeScore">0</span>
+              <em>-</em>
+              <span id="awayScore">0</span>
+            </div>
+          </section>
+
+          <section class="feed-heading">
+            <div>
+              <span class="section-kicker">Timeline</span>
+              <h3>Live Commentary</h3>
+            </div>
+            <p>Newest events appear at the bottom and scroll into view.</p>
+          </section>
+
+          <section id="stateRegion" aria-live="polite"></section>
+          <section class="timeline" id="commentaryTimeline"></section>
+        </main>
+      </div>
+    </div>
+
+    <script src="./js/config.js" defer></script>
+    <script src="./js/utils.js" defer></script>
+    <script src="./js/api.js" defer></script>
+    <script src="./js/websocket.js" defer></script>
+    <script src="./js/match.js" defer></script>
+  </body>
+</html>
