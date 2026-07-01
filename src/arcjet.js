@@ -18,7 +18,7 @@ export const httpArcjet = arcjetKey
         }),
         detectBot({
           mode: arcjetMode,
-          allow: ['CATEGORY:SEARCH_ENGINE', 'CATEGORY:PREVIEW'],
+          allow: ['CATEGORY:SEARCH_ENGINE', 'CATEGORY:PREVIEW', 'POSTMAN'],
         }),
         slidingWindow({
           mode: arcjetMode,
@@ -38,7 +38,7 @@ export const wsArcjet = arcjetKey
         }),
         detectBot({
           mode: arcjetMode,
-          allow: ['CATEGORY:SEARCH_ENGINE', 'CATEGORY:PREVIEW'],
+          allow: ['CATEGORY:SEARCH_ENGINE', 'CATEGORY:PREVIEW', 'POSTMAN'],
         }),
         slidingWindow({
           mode: arcjetMode,
@@ -55,7 +55,6 @@ export function securityMiddleware() {
     try {
       const decision = await httpArcjet.protect(req);
       if (decision.isDenied()) {
-        console.log(decision);
         if (decision.reason.isRateLimit()) {
           return res.status(429).json({ error: 'Too Many Requests' });
         }

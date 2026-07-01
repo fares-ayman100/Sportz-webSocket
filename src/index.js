@@ -9,8 +9,10 @@ const app = express();
 
 const server = http.createServer(app);
 
-const { broadcastMatchCreated } = attachWebSocketServer(server);
+const { broadcastMatchCreated, broadcastCommentary } =
+  attachWebSocketServer(server);
 app.locals.broadcastMatchCreated = broadcastMatchCreated;
+app.locals.broadcastCommentary = broadcastCommentary;
 
 
 app.use(express.json());
@@ -21,10 +23,8 @@ app.get('/', (req, res) => {
 });
 app.use('/matches', matchesRouter);
 
-
 app.use((err, req, res, next) => {
   console.error(err);
-
   res.status(500).json({
     error: 'Internal Server Error',
   });
